@@ -1,10 +1,4 @@
-<h1 align="center">
-  <br>
-  <a href="https://github.com/Kreusada/OceanScript"><img src="https://raw.githubusercontent.com/Kreusada/OceanScript/main/Resources/oceanscript.png" alt="OceanScript Esoteric Language"></a>
-  <br>
-  Operator Information Library
-  <br>
-</h1>
+# Operator Information Library
 
 The library to get information about various operators in 
 Python.
