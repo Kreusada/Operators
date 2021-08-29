@@ -3,8 +3,8 @@ __version__ = "0.0.2.beta"
 from typing import List as _List
 from typing import Literal as _Literal
 
-from _utils import _format_operator_type_doc
-from errors import UnknownOperator
+from ._utils import _format_operator_type_doc
+from .errors import UnknownOperator
 
 OperatorSelection = _Literal["arithmetic", "assignment", "comparison", "bitewise"]
 
