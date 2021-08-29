@@ -1,4 +1,4 @@
-__version__ = "0.0.2.b0"
+__version__ = "0.0.2.b2"
 
 from typing import List as _List
 from typing import Literal as _Literal
@@ -6,7 +6,9 @@ from typing import Literal as _Literal
 from ._utils import _format_operator_type_doc
 from .errors import UnknownOperator
 
-OperatorSelection = _Literal["arithmetic", "assignment", "comparison", "bitewise"]
+OperatorSelection = _Literal[
+    "arithmetic", "assignment", "comparison", "bitewise", "matrix"
+]
 
 _map = {
     "+": {
@@ -212,8 +214,13 @@ class ComparisonOperatorType(OperatorType):
     pass
 
 
+@_format_operator_type_doc()
+class MatrixOperatorType(OperatorType):
+    pass
+
+
 class Operator:
-    """Get an operator's name, methods and other information.
+    """Get an operator name, methods and other information.
 
     This class acts as a container for an operator, providing
     various attributes/properties.
@@ -247,8 +254,7 @@ class Operator:
 
     function: Union[types.BuiltinFunctionType, None]
         The function for this operator, derived from the operator
-        module. Returns None if the operator doesn't qualify for
-        a function.
+        module. Returns None if the operator has no function.
 
         o = Operator("+")
         o.function
@@ -267,6 +273,7 @@ class Operator:
         - Assignment
         - Bitewise
         - Comparison
+        - Matrix
 
         This type attribute returns an object in the form <type>OperatorType.
         All these operator types subclass OperatorType.
@@ -299,6 +306,7 @@ class Operator:
         "assignment": AssignmentOperatorType,
         "bitwise": BitwiseOperatorType,
         "comparison": ComparisonOperatorType,
+        "matrix": MatrixOperatorType,
     }
 
     def _format_f(self, f):
@@ -421,4 +429,4 @@ def gettypes(operator_type: OperatorSelection) -> _List[Operator]:
             if val["type"] == operator_type:
                 yield Operator(key)
 
-    return inner()
+    return list(inner())
