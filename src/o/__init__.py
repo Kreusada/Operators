@@ -1,12 +1,10 @@
 __version__ = "0.0.2.beta"
 
-from typing import (
-    List as _List, 
-    Literal as _Literal,
-)
+from typing import List as _List
+from typing import Literal as _Literal
 
-from errors import UnknownOperator
 from _utils import _format_operator_type_doc
+from errors import UnknownOperator
 
 OperatorSelection = _Literal["arithmetic", "assignment", "comparison", "bitewise"]
 
@@ -180,27 +178,34 @@ _map = {
         "name": "matmul",
         "func": "matmul",
         "type": "matrix",
-    }
+    },
 }
+
 
 class OperatorType:
     def __init__(self, operator):
         self.name = operator
+
     def __repr__(self):
         return self.__class__.__name__.lower()[:-12]
+
     __str__ = __repr__
+
 
 @_format_operator_type_doc()
 class ArithmeticOperatorType(OperatorType):
     pass
 
+
 @_format_operator_type_doc()
 class AssignmentOperatorType(OperatorType):
     pass
 
+
 @_format_operator_type_doc()
 class BitwiseOperatorType(OperatorType):
     pass
+
 
 @_format_operator_type_doc()
 class ComparisonOperatorType(OperatorType):
@@ -209,8 +214,8 @@ class ComparisonOperatorType(OperatorType):
 
 class Operator:
     """Get an operator's name, methods and other information.
-    
-    This class acts as a container for an operator, providing 
+
+    This class acts as a container for an operator, providing
     various attributes/properties.
 
     Attributes
@@ -255,7 +260,7 @@ class Operator:
 
     type: OperatorType
         The type for the operator, provided appropriately based on what
-        it aims to operate upon. Currently, there are 4 different types 
+        it aims to operate upon. Currently, there are 4 different types
         of operator:
 
         - Arithmetic
@@ -286,6 +291,7 @@ class Operator:
     UnknownOperator
         The provided operator is unknown.
     """
+
     import operator as _operator_mod
 
     type_mapping = {
@@ -325,7 +331,9 @@ class Operator:
             "function": self._format_f(self.function),
         }
 
-        return "<class 'Operator({})'>".format(", ".join(f"{k}={v}" for k, v in kwargs.items()))
+        return "<class 'Operator({})'>".format(
+            ", ".join(f"{k}={v}" for k, v in kwargs.items())
+        )
 
     @property
     def methods(self):
@@ -335,26 +343,27 @@ class Operator:
         f = self.function
         if f is None:
             return []
-        
+
         methods = []
-        if f := getattr(self.function, '__name__', None):
+        if f := getattr(self.function, "__name__", None):
             if dunder(f) in dir(self._operator_mod):
                 if f in alias_map.keys():
                     methods = [f, alias_map[f]]
                 else:
                     methods = [f]
                 methods = list(map(dunder, methods))
-            
+
         return methods
+
 
 def get(operator) -> Operator:
     """Get an operator's name, methods and other information.
-    
-    This function takes a single operator, and returns 
+
+    This function takes a single operator, and returns
     <class 'Operator'>, with various attributes available from it.
-    
+
     Example Usage:
-    
+
     o.get("+")
     >>> "<class 'Operator(operator='+', name='addition', type=arithmetic, methods=['__add__'], function=operator.add)'>"
 
@@ -381,6 +390,7 @@ def get(operator) -> Operator:
     """
     return Operator(operator)
 
+
 def gettypes(operator_type: OperatorSelection) -> _List[Operator]:
     """Get all operators of a certain type (e.g. assignment).
 
@@ -390,7 +400,7 @@ def gettypes(operator_type: OperatorSelection) -> _List[Operator]:
     - assignment
     - bitewise
     - comparison
-    
+
     Parameters
     ----------
     operator_type: OperatorSelection
@@ -405,8 +415,10 @@ def gettypes(operator_type: OperatorSelection) -> _List[Operator]:
     types = ["arithmetic", "assignment", "bitewise", "comparison"]
     if not operator_type in types:
         raise ValueError(f"Operator type must be one of " + ", ".join(types))
+
     def inner():
         for key, val in _map.items():
             if val["type"] == operator_type:
                 yield Operator(key)
+
     return inner()

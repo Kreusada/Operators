@@ -10,6 +10,7 @@ This object subclasses OperatorType which is accessible directly from the module
 namespace.
 """
 
+
 def _format_operator_type_doc():
     def decorator(cls):
         cls.__doc__ = _OBJECT_DOC.format(obj=cls.__name__[:-12].lower())
