@@ -410,5 +410,3 @@ def gettypes(operator_type: OperatorSelection) -> _List[Operator]:
             if val["type"] == operator_type:
                 yield Operator(key)
     return inner()
-
-print(get("+"))
