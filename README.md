@@ -9,7 +9,7 @@ Install through pip:
 pip install o
 ```
 
-Start off my importing the module:
+Start off by importing the module:
 
 ```py
 import o
